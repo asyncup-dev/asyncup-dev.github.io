@@ -1350,6 +1350,91 @@
         }
       }
     },
+    "/standups/{id}/webhook/secret": {
+      "get": {
+        "operationId": "getStandupsIdWebhookSecret",
+        "summary": "The key this standup’s webhooks are signed with",
+        "description": "Admins, and managers of the standup or person concerned.",
+        "tags": [
+          "Standups"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Standup id",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookSecret"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in, or a bad bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed for this caller, a policy refused it, or a browser request without the CSRF header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found, or not visible to the caller",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Not available on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/standups/{id}/members": {
       "get": {
         "operationId": "getStandupsIdMembers",
@@ -6704,6 +6789,18 @@
         },
         "required": [
           "spaces"
+        ],
+        "additionalProperties": false
+      },
+      "WebhookSecret": {
+        "type": "object",
+        "properties": {
+          "secret": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "secret"
         ],
         "additionalProperties": false
       },
