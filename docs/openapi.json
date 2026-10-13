@@ -1332,6 +1332,111 @@
         }
       }
     },
+    "/standups/{id}/roster/sync": {
+      "post": {
+        "operationId": "postStandupsIdRosterSync",
+        "summary": "Sync the roster with its Google Group now",
+        "description": "Admins, and managers of the standup or person concerned.",
+        "tags": [
+          "Roster"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Standup id",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RosterSynced"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in, or a bad bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed for this caller, a policy refused it, or a browser request without the CSRF header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found, or not visible to the caller",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicts with the current state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Google Chat did not answer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Not available on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/standups/{id}/participants": {
       "post": {
         "operationId": "postStandupsIdParticipants",
@@ -4698,6 +4803,42 @@
             ],
             "additionalProperties": false
           },
+          "roster": {
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "syncedAt": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "error": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "group",
+              "syncedAt",
+              "error"
+            ],
+            "additionalProperties": false,
+            "description": "`group` is the Google Group the roster follows, or null when people are added by hand."
+          },
           "people": {
             "type": "object",
             "properties": {
@@ -4791,6 +4932,7 @@
           "timeOffPolicy",
           "escalation",
           "webhook",
+          "roster",
           "people",
           "today",
           "permissions"
@@ -4945,6 +5087,42 @@
             ],
             "additionalProperties": false
           },
+          "roster": {
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "syncedAt": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "error": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "group",
+              "syncedAt",
+              "error"
+            ],
+            "additionalProperties": false,
+            "description": "`group` is the Google Group the roster follows, or null when people are added by hand."
+          },
           "people": {
             "type": "object",
             "properties": {
@@ -5058,6 +5236,13 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 9007199254740991
+                },
+                "source": {
+                  "type": "string",
+                  "enum": [
+                    "manual",
+                    "group"
+                  ]
                 }
               },
               "required": [
@@ -5067,7 +5252,8 @@
                 "timezone",
                 "onVacation",
                 "workingDays",
-                "otherStandups"
+                "otherStandups",
+                "source"
               ],
               "additionalProperties": false
             }
@@ -5077,6 +5263,13 @@
             "items": {
               "$ref": "#/components/schemas/Person"
             }
+          },
+          "keptOff": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            },
+            "description": "Roster-group members taken off by hand; syncs keep them off."
           }
         },
         "required": [
@@ -5091,11 +5284,13 @@
           "timeOffPolicy",
           "escalation",
           "webhook",
+          "roster",
           "people",
           "today",
           "permissions",
           "participants",
-          "admins"
+          "admins",
+          "keptOff"
         ],
         "additionalProperties": false
       },
@@ -5241,6 +5436,42 @@
             ],
             "additionalProperties": false
           },
+          "roster": {
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "syncedAt": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "error": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "group",
+              "syncedAt",
+              "error"
+            ],
+            "additionalProperties": false,
+            "description": "`group` is the Google Group the roster follows, or null when people are added by hand."
+          },
           "people": {
             "type": "object",
             "properties": {
@@ -5354,6 +5585,13 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 9007199254740991
+                },
+                "source": {
+                  "type": "string",
+                  "enum": [
+                    "manual",
+                    "group"
+                  ]
                 }
               },
               "required": [
@@ -5363,7 +5601,8 @@
                 "timezone",
                 "onVacation",
                 "workingDays",
-                "otherStandups"
+                "otherStandups",
+                "source"
               ],
               "additionalProperties": false
             }
@@ -5373,6 +5612,13 @@
             "items": {
               "$ref": "#/components/schemas/Person"
             }
+          },
+          "keptOff": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            },
+            "description": "Roster-group members taken off by hand; syncs keep them off."
           },
           "template": {
             "type": [
@@ -5403,11 +5649,13 @@
           "timeOffPolicy",
           "escalation",
           "webhook",
+          "roster",
           "people",
           "today",
           "permissions",
           "participants",
           "admins",
+          "keptOff",
           "template",
           "runNow"
         ],
@@ -5850,6 +6098,54 @@
         },
         "required": [
           "weeks"
+        ],
+        "additionalProperties": false
+      },
+      "RosterSynced": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "skipped": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "email",
+                "reason"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "syncedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          }
+        },
+        "required": [
+          "added",
+          "removed",
+          "skipped",
+          "syncedAt"
         ],
         "additionalProperties": false
       },
@@ -7565,6 +7861,13 @@
               "string",
               "null"
             ]
+          },
+          "rosterGroup": {
+            "description": "Google Group email the roster follows; empty or null means people are added by hand",
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "additionalProperties": false
@@ -7642,6 +7945,13 @@
           },
           "escalateUserName": {
             "description": "A participant’s userName; empty or null switches escalation off",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rosterGroup": {
+            "description": "Google Group email the roster follows; empty or null means people are added by hand",
             "type": [
               "string",
               "null"
