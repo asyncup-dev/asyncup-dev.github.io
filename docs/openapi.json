@@ -1247,6 +1247,91 @@
         }
       }
     },
+    "/standups/{id}/members": {
+      "get": {
+        "operationId": "getStandupsIdMembers",
+        "summary": "Members of the standup’s Chat space, as roster candidates",
+        "description": "Admins, and managers of the standup or person concerned.",
+        "tags": [
+          "Roster"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Standup id",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceMembers"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in, or a bad bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed for this caller, a policy refused it, or a browser request without the CSRF header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found, or not visible to the caller",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Google Chat did not answer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/standups/{id}/participants": {
       "post": {
         "operationId": "postStandupsIdParticipants",
@@ -4962,6 +5047,17 @@
                 },
                 "onVacation": {
                   "type": "boolean"
+                },
+                "workingDays": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "otherStandups": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
                 }
               },
               "required": [
@@ -4969,7 +5065,9 @@
                 "displayName",
                 "mandatory",
                 "timezone",
-                "onVacation"
+                "onVacation",
+                "workingDays",
+                "otherStandups"
               ],
               "additionalProperties": false
             }
@@ -5245,6 +5343,17 @@
                 },
                 "onVacation": {
                   "type": "boolean"
+                },
+                "workingDays": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "otherStandups": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
                 }
               },
               "required": [
@@ -5252,7 +5361,9 @@
                 "displayName",
                 "mandatory",
                 "timezone",
-                "onVacation"
+                "onVacation",
+                "workingDays",
+                "otherStandups"
               ],
               "additionalProperties": false
             }
