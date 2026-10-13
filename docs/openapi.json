@@ -4343,7 +4343,8 @@
           "read",
           "blockers:write",
           "submit",
-          "schedule"
+          "schedule",
+          "manage"
         ]
       },
       "Error": {
@@ -6193,6 +6194,149 @@
         ],
         "additionalProperties": false
       },
+      "MyStandup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": "string"
+          },
+          "schedule": {
+            "type": "object",
+            "properties": {
+              "promptTime": {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              "deadlineTime": {
+                "type": "string",
+                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+              },
+              "timezone": {
+                "type": "string"
+              },
+              "days": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Weekday"
+                }
+              }
+            },
+            "required": [
+              "promptTime",
+              "deadlineTime",
+              "timezone",
+              "days"
+            ],
+            "additionalProperties": false
+          },
+          "today": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "submitted",
+                  "waiting",
+                  "closed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "submitted": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "expected": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "submitted",
+                  "expected"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mandatory": {
+            "type": "boolean"
+          },
+          "onVacation": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "schedule",
+          "today",
+          "progress",
+          "mandatory",
+          "onVacation"
+        ],
+        "additionalProperties": false
+      },
+      "LinkedMyStandups": {
+        "type": "object",
+        "properties": {
+          "linked": {
+            "type": "boolean",
+            "const": true
+          },
+          "timezone": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "chat": {
+            "type": "object",
+            "properties": {
+              "dmUrl": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "dmUrl"
+            ],
+            "additionalProperties": false
+          },
+          "standups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MyStandup"
+            }
+          }
+        },
+        "required": [
+          "linked",
+          "timezone",
+          "chat",
+          "standups"
+        ],
+        "additionalProperties": false
+      },
       "MyStandups": {
         "anyOf": [
           {
@@ -6206,104 +6350,7 @@
                 "maxItems": 0,
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "exclusiveMinimum": 0,
-                      "maximum": 9007199254740991
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "schedule": {
-                      "type": "object",
-                      "properties": {
-                        "promptTime": {
-                          "type": "string",
-                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
-                        },
-                        "deadlineTime": {
-                          "type": "string",
-                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
-                        },
-                        "timezone": {
-                          "type": "string"
-                        },
-                        "days": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Weekday"
-                          }
-                        }
-                      },
-                      "required": [
-                        "promptTime",
-                        "deadlineTime",
-                        "timezone",
-                        "days"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "today": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "enum": [
-                            "submitted",
-                            "waiting",
-                            "closed"
-                          ]
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
-                    "progress": {
-                      "anyOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "submitted": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 9007199254740991
-                            },
-                            "expected": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 9007199254740991
-                            }
-                          },
-                          "required": [
-                            "submitted",
-                            "expected"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
-                    "mandatory": {
-                      "type": "boolean"
-                    },
-                    "onVacation": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "schedule",
-                    "today",
-                    "progress",
-                    "mandatory",
-                    "onVacation"
-                  ],
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/MyStandup"
                 }
               }
             },
@@ -6314,144 +6361,7 @@
             "additionalProperties": false
           },
           {
-            "type": "object",
-            "properties": {
-              "linked": {
-                "type": "boolean",
-                "const": true
-              },
-              "timezone": {
-                "type": [
-                  "string",
-                  "null"
-                ]
-              },
-              "chat": {
-                "type": "object",
-                "properties": {
-                  "dmUrl": {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
-                  }
-                },
-                "required": [
-                  "dmUrl"
-                ],
-                "additionalProperties": false
-              },
-              "standups": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "exclusiveMinimum": 0,
-                      "maximum": 9007199254740991
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "schedule": {
-                      "type": "object",
-                      "properties": {
-                        "promptTime": {
-                          "type": "string",
-                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
-                        },
-                        "deadlineTime": {
-                          "type": "string",
-                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
-                        },
-                        "timezone": {
-                          "type": "string"
-                        },
-                        "days": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Weekday"
-                          }
-                        }
-                      },
-                      "required": [
-                        "promptTime",
-                        "deadlineTime",
-                        "timezone",
-                        "days"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "today": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "enum": [
-                            "submitted",
-                            "waiting",
-                            "closed"
-                          ]
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
-                    "progress": {
-                      "anyOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "submitted": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 9007199254740991
-                            },
-                            "expected": {
-                              "type": "integer",
-                              "minimum": 0,
-                              "maximum": 9007199254740991
-                            }
-                          },
-                          "required": [
-                            "submitted",
-                            "expected"
-                          ],
-                          "additionalProperties": false
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
-                    "mandatory": {
-                      "type": "boolean"
-                    },
-                    "onVacation": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "name",
-                    "schedule",
-                    "today",
-                    "progress",
-                    "mandatory",
-                    "onVacation"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            },
-            "required": [
-              "linked",
-              "timezone",
-              "chat",
-              "standups"
-            ],
-            "additionalProperties": false
+            "$ref": "#/components/schemas/LinkedMyStandups"
           }
         ]
       },
@@ -7005,7 +6915,8 @@
                   "read",
                   "blockers:write",
                   "submit",
-                  "schedule"
+                  "schedule",
+                  "manage"
                 ]
               }
             },
