@@ -2595,6 +2595,16 @@
               }
             }
           },
+          "400": {
+            "description": "Invalid input; `error.field` names it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Not signed in, or a bad bearer token",
             "content": {
@@ -5995,13 +6005,20 @@
                 },
                 "reasonLabel": {
                   "type": "string"
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 }
               },
               "required": [
                 "userName",
                 "displayName",
                 "reason",
-                "reasonLabel"
+                "reasonLabel",
+                "note"
               ],
               "additionalProperties": false
             }
@@ -8190,10 +8207,16 @@
             "type": "integer",
             "exclusiveMinimum": 0,
             "maximum": 9007199254740991
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 150
           }
         },
         "required": [
-          "standupId"
+          "standupId",
+          "reason"
         ],
         "additionalProperties": false
       },
