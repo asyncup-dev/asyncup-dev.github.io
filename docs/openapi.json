@@ -5300,6 +5300,7 @@
           "started",
           "already_open",
           "already_closed",
+          "past_deadline",
           "no_participants"
         ]
       },
