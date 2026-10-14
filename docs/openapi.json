@@ -259,7 +259,8 @@
       "post": {
         "operationId": "postStandups",
         "summary": "Create a standup",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Create standups” permission (`standups.create`).",
+        "x-permission": "standups.create",
         "tags": [
           "Standups"
         ],
@@ -341,7 +342,8 @@
       "get": {
         "operationId": "getStandupsId",
         "summary": "One standup with its roster and admins",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “See standups” permission (`standups.view`).",
+        "x-permission": "standups.view",
         "tags": [
           "Standups"
         ],
@@ -414,7 +416,8 @@
       "patch": {
         "operationId": "patchStandupsId",
         "summary": "Change a standup’s settings",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Configure standups” permission (`standups.configure`).",
+        "x-permission": "standups.configure",
         "tags": [
           "Standups"
         ],
@@ -507,7 +510,8 @@
       "delete": {
         "operationId": "deleteStandupsId",
         "summary": "Delete an archived standup and all its history",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Delete standups” permission (`standups.delete`).",
+        "x-permission": "standups.delete",
         "tags": [
           "Standups"
         ],
@@ -612,7 +616,8 @@
       "post": {
         "operationId": "postStandupsIdArchive",
         "summary": "Archive a standup",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Archive standups” permission (`standups.archive`).",
+        "x-permission": "standups.archive",
         "tags": [
           "Standups"
         ],
@@ -687,7 +692,8 @@
       "post": {
         "operationId": "postStandupsIdUnarchive",
         "summary": "Bring an archived standup back",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Archive standups” permission (`standups.archive`).",
+        "x-permission": "standups.archive",
         "tags": [
           "Standups"
         ],
@@ -762,7 +768,8 @@
       "post": {
         "operationId": "postStandupsIdRunNow",
         "summary": "Start today’s run now",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Configure standups” permission (`standups.configure`).",
+        "x-permission": "standups.configure",
         "tags": [
           "Standups"
         ],
@@ -837,7 +844,8 @@
       "post": {
         "operationId": "postStandupsIdNudge",
         "summary": "Remind everyone still expected today",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Configure standups” permission (`standups.configure`).",
+        "x-permission": "standups.configure",
         "tags": [
           "Standups"
         ],
@@ -922,7 +930,8 @@
       "get": {
         "operationId": "getStandupsIdRuns",
         "summary": "Recent runs",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “See reports” permission (`reports.view`).",
+        "x-permission": "reports.view",
         "tags": [
           "Runs"
         ],
@@ -1009,7 +1018,8 @@
       "get": {
         "operationId": "getStandupsIdRunsToday",
         "summary": "Today’s run, for polling",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “See standups” permission (`standups.view`).",
+        "x-permission": "standups.view",
         "tags": [
           "Runs"
         ],
@@ -1084,7 +1094,8 @@
       "get": {
         "operationId": "getStandupsIdRunsDate",
         "summary": "One day’s run with every submission",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “Read answers” permission (`answers.view`).",
+        "x-permission": "answers.view",
         "tags": [
           "Runs"
         ],
@@ -1180,7 +1191,8 @@
       "get": {
         "operationId": "getStandupsIdInsights",
         "summary": "Weekly participation, mood and blocker trends",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “See reports” permission (`reports.view`).",
+        "x-permission": "reports.view",
         "tags": [
           "Runs"
         ],
@@ -1267,7 +1279,8 @@
       "get": {
         "operationId": "getStandupsIdExportCsv",
         "summary": "Submissions as CSV",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Export” permission (`export`).",
+        "x-permission": "export",
         "tags": [
           "Runs"
         ],
@@ -1354,7 +1367,8 @@
       "get": {
         "operationId": "getStandupsIdWebhookSecret",
         "summary": "The key this standup’s webhooks are signed with",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Configure standups” permission (`standups.configure`).",
+        "x-permission": "standups.configure",
         "tags": [
           "Standups"
         ],
@@ -1439,7 +1453,8 @@
       "get": {
         "operationId": "getStandupsIdMembers",
         "summary": "Members of the standup’s Chat space, as roster candidates",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
         "tags": [
           "Roster"
         ],
@@ -1524,7 +1539,8 @@
       "post": {
         "operationId": "postStandupsIdRosterSync",
         "summary": "Sync the roster with its Google Group now",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
         "tags": [
           "Roster"
         ],
@@ -1629,7 +1645,8 @@
       "post": {
         "operationId": "postStandupsIdParticipants",
         "summary": "Add someone to the roster",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
         "tags": [
           "Roster"
         ],
@@ -1724,7 +1741,8 @@
       "patch": {
         "operationId": "patchStandupsIdParticipantsUserName",
         "summary": "Change someone’s role on the roster",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
         "tags": [
           "Roster"
         ],
@@ -1836,7 +1854,8 @@
       "delete": {
         "operationId": "deleteStandupsIdParticipantsUserName",
         "summary": "Remove someone from the roster",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
         "tags": [
           "Roster"
         ],
@@ -1913,7 +1932,8 @@
       "get": {
         "operationId": "getBlockers",
         "summary": "Blockers across the standups the caller can see",
-        "description": "Any signed-in caller.",
+        "description": "Any signed-in caller. Needs the “See blockers” permission (`blockers.view`).",
+        "x-permission": "blockers.view",
         "tags": [
           "Blockers"
         ],
@@ -2288,7 +2308,8 @@
       "get": {
         "operationId": "getPeople",
         "summary": "Everyone on the rosters the caller manages",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “See the team” permission (`people.view`).",
+        "x-permission": "people.view",
         "tags": [
           "People"
         ],
@@ -2392,7 +2413,8 @@
       "get": {
         "operationId": "getSpaces",
         "summary": "Chat spaces the app is in",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Create standups” permission (`standups.create`).",
+        "x-permission": "standups.create",
         "tags": [
           "Standups"
         ],
@@ -2454,7 +2476,8 @@
       "get": {
         "operationId": "getSpacesNameMembers",
         "summary": "Human members of a Chat space",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Create standups” permission (`standups.create`).",
+        "x-permission": "standups.create",
         "tags": [
           "Standups"
         ],
@@ -3106,7 +3129,8 @@
       "get": {
         "operationId": "getPeopleUserNameSchedule",
         "summary": "Someone’s week and upcoming days",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3177,7 +3201,8 @@
       "patch": {
         "operationId": "patchPeopleUserNameSchedule",
         "summary": "Set someone’s week",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3270,7 +3295,8 @@
       "post": {
         "operationId": "postPeopleUserNameOverrides",
         "summary": "Mark someone’s days off or extra working days",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3363,7 +3389,8 @@
       "delete": {
         "operationId": "deletePeopleUserNameOverridesDate",
         "summary": "Withdraw someone’s day",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3457,7 +3484,8 @@
       "get": {
         "operationId": "getRequests",
         "summary": "Time-off requests waiting for a decision",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3519,7 +3547,8 @@
       "post": {
         "operationId": "postRequestsIdApprove",
         "summary": "Approve a request",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3612,7 +3641,8 @@
       "post": {
         "operationId": "postRequestsIdDecline",
         "summary": "Decline a request",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
+        "x-permission": "schedules.manage",
         "tags": [
           "Schedules"
         ],
@@ -3705,7 +3735,8 @@
       "get": {
         "operationId": "getSettings",
         "summary": "Workspace settings",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Settings"
         ],
@@ -3755,7 +3786,8 @@
       "patch": {
         "operationId": "patchSettings",
         "summary": "Change workspace settings",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Settings"
         ],
@@ -3837,7 +3869,8 @@
       "delete": {
         "operationId": "deleteHistory",
         "summary": "Delete every run, submission, blocker and poll",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Settings"
         ],
@@ -3909,7 +3942,8 @@
       "post": {
         "operationId": "postSettingsTokensName",
         "summary": "Generate a machine token",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage tokens” permission (`tokens.manage`).",
+        "x-permission": "tokens.manage",
         "tags": [
           "Settings"
         ],
@@ -3985,7 +4019,8 @@
       "delete": {
         "operationId": "deleteSettingsTokensName",
         "summary": "Revoke a machine token",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage tokens” permission (`tokens.manage`).",
+        "x-permission": "tokens.manage",
         "tags": [
           "Settings"
         ],
@@ -4056,7 +4091,8 @@
       "post": {
         "operationId": "postVerifyProject",
         "summary": "Check the Google Cloud project number",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Verify"
         ],
@@ -4108,7 +4144,8 @@
       "post": {
         "operationId": "postVerifyServiceAccount",
         "summary": "Check the service account against the Chat API",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Verify"
         ],
@@ -4160,7 +4197,8 @@
       "post": {
         "operationId": "postVerifyChatEvent",
         "summary": "Check that Chat events are arriving",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Verify"
         ],
@@ -4212,7 +4250,8 @@
       "post": {
         "operationId": "postVerifyWebhook",
         "summary": "Send a signed test event to a standup’s webhook",
-        "description": "Admins, and managers of the standup or person concerned.",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Configure standups” permission (`standups.configure`).",
+        "x-permission": "standups.configure",
         "tags": [
           "Verify"
         ],
@@ -4284,7 +4323,8 @@
       "post": {
         "operationId": "postVerifySaml",
         "summary": "Check the SAML identity provider",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage sign-in” permission (`sso.manage`).",
+        "x-permission": "sso.manage",
         "tags": [
           "Verify"
         ],
@@ -4644,7 +4684,8 @@
       "post": {
         "operationId": "postVerifyMcp",
         "summary": "Check the MCP server is on and has tokens",
-        "description": "Workspace admins and the operator token.",
+        "description": "Workspace admins and the operator token. Needs the “Manage settings” permission (`settings.manage`).",
+        "x-permission": "settings.manage",
         "tags": [
           "Verify"
         ],
