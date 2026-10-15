@@ -8247,6 +8247,34 @@
                   }
                 ],
                 "description": "The latest failure writing someone’s leave to Chat or Calendar."
+              },
+              "spelling": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "dialect": {
+                    "type": "string",
+                    "enum": [
+                      "en-GB",
+                      "en-US"
+                    ]
+                  },
+                  "words": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "enabled",
+                  "dialect",
+                  "words"
+                ],
+                "additionalProperties": false,
+                "description": "Likely typos in Chat answers pointed out once before posting; `words` are never flagged."
               }
             },
             "required": [
@@ -8255,7 +8283,8 @@
               "workspaceAdminEmail",
               "leaveInChat",
               "leaveDeclineMode",
-              "leaveSyncError"
+              "leaveSyncError",
+              "spelling"
             ],
             "additionalProperties": false
           },
@@ -9299,6 +9328,20 @@
               "new",
               "all"
             ]
+          },
+          "spellingEnabled": {
+            "type": "boolean"
+          },
+          "spellingDialect": {
+            "type": "string",
+            "enum": [
+              "en-GB",
+              "en-US"
+            ]
+          },
+          "spellingWords": {
+            "type": "string",
+            "description": "One word or phrase per line."
           },
           "tokenSignIn": {
             "type": "boolean"
