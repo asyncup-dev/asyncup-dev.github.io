@@ -5466,6 +5466,7 @@
           "people.manage",
           "schedules.manage",
           "answers.view",
+          "moods.comments",
           "blockers.view",
           "blockers.manage",
           "reports.view",
@@ -6969,6 +6970,33 @@
         ],
         "additionalProperties": false
       },
+      "MoodComment": {
+        "type": "object",
+        "properties": {
+          "person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Person"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mood": {
+            "$ref": "#/components/schemas/Mood"
+          },
+          "comment": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "person",
+          "mood",
+          "comment"
+        ],
+        "additionalProperties": false
+      },
       "RunDetail": {
         "type": "object",
         "properties": {
@@ -7011,6 +7039,12 @@
               "number",
               "null"
             ]
+          },
+          "moodComments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoodComment"
+            }
           }
         },
         "required": [
@@ -7806,6 +7840,12 @@
                     }
                   ]
                 },
+                "moodComment": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
                 "answers": {
                   "type": "array",
                   "items": {
@@ -7820,6 +7860,7 @@
                 "editedAt",
                 "late",
                 "mood",
+                "moodComment",
                 "answers"
               ],
               "additionalProperties": false
