@@ -8208,12 +8208,54 @@
               },
               "workspaceAdminEmail": {
                 "type": "string"
+              },
+              "leaveInChat": {
+                "type": "boolean",
+                "description": "Days off and vacation mode shown as people’s Chat status and a Calendar out-of-office event."
+              },
+              "leaveDeclineMode": {
+                "type": "string",
+                "enum": [
+                  "none",
+                  "new",
+                  "all"
+                ],
+                "description": "What the out-of-office event does with clashing invites."
+              },
+              "leaveSyncError": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                      }
+                    },
+                    "required": [
+                      "message",
+                      "at"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "The latest failure writing someone’s leave to Chat or Calendar."
               }
             },
             "required": [
               "defaultTimezone",
               "calendarOoo",
-              "workspaceAdminEmail"
+              "workspaceAdminEmail",
+              "leaveInChat",
+              "leaveDeclineMode",
+              "leaveSyncError"
             ],
             "additionalProperties": false
           },
@@ -9246,6 +9288,17 @@
         "properties": {
           "calendarOoo": {
             "type": "boolean"
+          },
+          "leaveInChat": {
+            "type": "boolean"
+          },
+          "leaveDeclineMode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "new",
+              "all"
+            ]
           },
           "tokenSignIn": {
             "type": "boolean"
