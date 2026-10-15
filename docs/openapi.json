@@ -1538,7 +1538,7 @@
     "/standups/{id}/roster/sync": {
       "post": {
         "operationId": "postStandupsIdRosterSync",
-        "summary": "Sync the roster with its Google Group now",
+        "summary": "Sync the roster with its Google Group, or with its Chat space, now",
         "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
         "x-permission": "people.manage",
         "tags": [
@@ -1590,16 +1590,6 @@
           },
           "404": {
             "description": "Not found, or not visible to the caller",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflicts with the current state",
             "content": {
               "application/json": {
                 "schema": {
@@ -6082,15 +6072,42 @@
                   "string",
                   "null"
                 ]
+              },
+              "leftSpace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "userName": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    }
+                  },
+                  "required": [
+                    "userName",
+                    "displayName",
+                    "at"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "On a roster picked from the space: people taken off for leaving it, until they rejoin or a manager acts."
               }
             },
             "required": [
               "group",
               "syncedAt",
-              "error"
+              "error",
+              "leftSpace"
             ],
             "additionalProperties": false,
-            "description": "`group` is the Google Group the roster follows, or null when people are added by hand."
+            "description": "`group` is the Google Group the roster follows, or null when people are picked from the space. `syncedAt` and `error` cover either kind of sync."
           },
           "people": {
             "type": "object",
@@ -6432,15 +6449,42 @@
                   "string",
                   "null"
                 ]
+              },
+              "leftSpace": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "userName": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                    }
+                  },
+                  "required": [
+                    "userName",
+                    "displayName",
+                    "at"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": "On a roster picked from the space: people taken off for leaving it, until they rejoin or a manager acts."
               }
             },
             "required": [
               "group",
               "syncedAt",
-              "error"
+              "error",
+              "leftSpace"
             ],
             "additionalProperties": false,
-            "description": "`group` is the Google Group the roster follows, or null when people are added by hand."
+            "description": "`group` is the Google Group the roster follows, or null when people are picked from the space. `syncedAt` and `error` cover either kind of sync."
           },
           "people": {
             "type": "object",
