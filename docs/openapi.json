@@ -2769,7 +2769,7 @@
     "/me/schedule": {
       "get": {
         "operationId": "getMeSchedule",
-        "summary": "My week, policies and upcoming days",
+        "summary": "My days on each standup, policies and upcoming days",
         "description": "A signed-in person with a Chat identity; the operator token cannot act as one.",
         "tags": [
           "Schedules"
@@ -2839,7 +2839,7 @@
       },
       "patch": {
         "operationId": "patchMeSchedule",
-        "summary": "Set my week",
+        "summary": "Set my days on a standup",
         "description": "A signed-in person with a Chat identity; the operator token cannot act as one.",
         "tags": [
           "Schedules"
@@ -3118,7 +3118,7 @@
     "/people/{userName}/schedule": {
       "get": {
         "operationId": "getPeopleUserNameSchedule",
-        "summary": "Someone’s week and upcoming days",
+        "summary": "Someone’s days and upcoming days",
         "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
         "x-permission": "schedules.manage",
         "tags": [
@@ -3190,7 +3190,7 @@
       },
       "patch": {
         "operationId": "patchPeopleUserNameSchedule",
-        "summary": "Set someone’s week",
+        "summary": "Set someone’s days on a standup",
         "description": "Admins, and managers of the standup or person concerned. Needs the “Manage schedules” permission (`schedules.manage`).",
         "x-permission": "schedules.manage",
         "tags": [
@@ -8319,13 +8319,59 @@
             "type": "string"
           },
           "workingDays": {
+            "description": "Deprecated: days differ per standup, so read `standups`.",
             "type": [
               "string",
               "null"
             ]
           },
           "workingDaysLabel": {
-            "type": "string"
+            "type": "string",
+            "description": "Deprecated, with `workingDays`."
+          },
+          "standups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "standupId": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "name": {
+                  "type": "string"
+                },
+                "days": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Weekday"
+                  },
+                  "description": "The standup’s own days: the default."
+                },
+                "workingDays": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "workingDaysLabel": {
+                  "type": "string"
+                },
+                "timeOffPolicy": {
+                  "$ref": "#/components/schemas/TimeOffPolicy"
+                }
+              },
+              "required": [
+                "standupId",
+                "name",
+                "days",
+                "workingDays",
+                "workingDaysLabel",
+                "timeOffPolicy"
+              ],
+              "additionalProperties": false
+            }
           },
           "policies": {
             "type": "array",
@@ -8364,6 +8410,7 @@
           "displayName",
           "workingDays",
           "workingDaysLabel",
+          "standups",
           "policies",
           "overrides"
         ],
@@ -9604,6 +9651,11 @@
         "properties": {
           "workingDays": {
             "type": "string"
+          },
+          "standupId": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
           }
         },
         "additionalProperties": false
