@@ -1535,6 +1535,82 @@
         }
       }
     },
+    "/standups/{id}/manager-candidates": {
+      "get": {
+        "operationId": "getStandupsIdManagerCandidates",
+        "summary": "People who can be picked as a reporting manager",
+        "description": "Admins, and managers of the standup or person concerned. Needs the “Manage people” permission (`people.manage`).",
+        "x-permission": "people.manage",
+        "tags": [
+          "Roster"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Standup id",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManagerCandidates"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in, or a bad bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Not allowed for this caller, a policy refused it, or a browser request without the CSRF header",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found, or not visible to the caller",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/standups/{id}/roster/sync": {
       "post": {
         "operationId": "postStandupsIdRosterSync",
@@ -6958,6 +7034,19 @@
                     "manual",
                     "group"
                   ]
+                },
+                "reportingManager": {
+                  "description": "Who else approves this person’s days off on this standup; null when nobody beyond its managers.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reportingManagerName": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 }
               },
               "required": [
@@ -6968,7 +7057,9 @@
                 "onVacation",
                 "workingDays",
                 "otherStandups",
-                "source"
+                "source",
+                "reportingManager",
+                "reportingManagerName"
               ],
               "additionalProperties": false
             }
@@ -7335,6 +7426,19 @@
                     "manual",
                     "group"
                   ]
+                },
+                "reportingManager": {
+                  "description": "Who else approves this person’s days off on this standup; null when nobody beyond its managers.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "reportingManagerName": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 }
               },
               "required": [
@@ -7345,7 +7449,9 @@
                 "onVacation",
                 "workingDays",
                 "otherStandups",
-                "source"
+                "source",
+                "reportingManager",
+                "reportingManagerName"
               ],
               "additionalProperties": false
             }
@@ -7973,6 +8079,18 @@
           },
           "admin": {
             "type": "boolean"
+          },
+          "reportingManager": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reportingManagerName": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         },
         "required": [
@@ -7980,7 +8098,9 @@
           "displayName",
           "mandatory",
           "onVacation",
-          "admin"
+          "admin",
+          "reportingManager",
+          "reportingManagerName"
         ],
         "additionalProperties": false
       },
@@ -8393,6 +8513,21 @@
         },
         "required": [
           "members"
+        ],
+        "additionalProperties": false
+      },
+      "ManagerCandidates": {
+        "type": "object",
+        "properties": {
+          "managers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Person"
+            }
+          }
+        },
+        "required": [
+          "managers"
         ],
         "additionalProperties": false
       },
@@ -10510,6 +10645,19 @@
           },
           "admin": {
             "type": "boolean"
+          },
+          "reportingManager": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "starts_with",
+                "pattern": "^users\\/.*"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Must already manage a standup, and not be this person. null clears it."
           }
         },
         "additionalProperties": false
